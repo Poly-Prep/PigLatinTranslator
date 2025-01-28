@@ -29,14 +29,15 @@ public class Word {
         char[] charArray = newWord.toCharArray();
         containsLetters = false;
         for (int i = 0; i < charArray.length; i++) {
+            //https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html
             if (Character.isLetter(charArray[i])) {
                 containsLetters = true;
                 break;
             }
         }
         if (!containsLetters) {
-            punctuationF = null;
-            punctuationE = null;
+            punctuationF = "";
+            punctuationE = "";
             isCapitalized = false;
             editedWord = newWord;
         }
@@ -52,7 +53,7 @@ public class Word {
                 punctuationF = punctuationF + charArray[i];
             }
         } else {
-            punctuationF = null;
+            punctuationF = "";
         }
         //if the first character isn't alphabetic call it end punctuation
         if (!Character.isLetter(charArray[charArray.length - 1])) {
@@ -66,16 +67,16 @@ public class Word {
             }
 
         } else {
-            punctuationE = null;
+            punctuationE = "";
         }
         editedWord = "";
         //build an edited version of the word without punctuation and lowercased
         for (int i = 0; i < charArray.length; i++) {
             //dont include punctuation or anything other than a letter that's at the front or back of a word
-            if (punctuationF != null && i < punctuationF.length()) {
+            if (punctuationF != "" && i < punctuationF.length()) {
                 continue;
             }
-            if (punctuationE != null && i > charArray.length - 1 - punctuationE.length()) {
+            if (punctuationE != "" && i > charArray.length - 1 - punctuationE.length()) {
                 continue;
             }
             editedWord = editedWord + charArray[i];
@@ -93,17 +94,49 @@ public class Word {
 
 
     public String toPigLatin() {
+        //!!!!!currently can't handlee 1 letter words!!!!!! 1/28/25
+
         if (!containsLetters) {
             return new String(originalWord);
         }
+
         char[] charArray = editedWord.toCharArray();
+
         if (vowels.contains(charArray[0])) {
+            System.out.println(3);
+            //rule3
             String pigLatinWord = new String(charArray);
-            if(isCapitalized) {
+            if (isCapitalized) {
                 pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
             }
-            //almsot done with rule 3, 1 and 2 need to be done
             pigLatinWord = punctuationF + pigLatinWord + "way" + punctuationE;
+            return pigLatinWord;
+        } else if (vowels.contains(charArray[1]) && Character.isLetter(charArray[0])) {
+            System.out.println(1);
+            //rule 1
+            String pigLatinWord = "";
+            //assemble word starting at second letter
+            for (int i = 1; i < charArray.length; i++) {
+                pigLatinWord = pigLatinWord + charArray[i];
+            }
+            //assemble word with ending and punctuation.
+            pigLatinWord = punctuationF + pigLatinWord + charArray[0] + "ay" + punctuationE;
+            return pigLatinWord;
+            //redundant but worth checking for debugging and error handling reasons
+        } else if (Character.isLetter(charArray[0]) && Character.isLetter(charArray[1])) {
+            //rule 2
+            System.out.println(2);
+            String pigLatinWord = "";
+            for (int i = 2; i < charArray.length; i++) {
+                pigLatinWord = pigLatinWord + charArray[i];
+            }
+            pigLatinWord = punctuationF + pigLatinWord + charArray[0] + charArray[1] + punctuationE;
+            return pigLatinWord;
+        } else {
+            //failure handling
+            //currently may fail if a word is like x-xxxxx
+            System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
+            return originalWord;
         }
     }
 
@@ -116,12 +149,12 @@ public class Word {
         this.punctuationF = punctuationF;
     }
 
-    public String getPuntuationE() {
-        return puntuationE;
+    public String getPunctuationE() {
+        return punctuationE;
     }
 
-    public void setPuntuationE(String puntuationE) {
-        this.puntuationE = puntuationE;
+    public void setPunctuationE(String punctuationE) {
+        this.punctuationE = punctuationE;
     }
 
     public String getOriginalWord() {
