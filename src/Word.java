@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //reminder to self, don't feed in spaces
 //for revision at end: possible bloat in unused instance variables
 public class Word {
@@ -11,7 +13,15 @@ public class Word {
     private String editedWord;
     private boolean isCapitalized;
     private boolean containsLetters;
+    private ArrayList<Character> vowels = new ArrayList<Character>();
+
     public Word(String newWord) {
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('y');
         originalWord = new String(newWord);
 
         //convert word into a character array.
@@ -19,7 +29,10 @@ public class Word {
         char[] charArray = newWord.toCharArray();
         containsLetters = false;
         for (int i = 0; i < charArray.length; i++) {
-            if (Character.isLetter(charArray[i])) { containsLetters = true; break; }
+            if (Character.isLetter(charArray[i])) {
+                containsLetters = true;
+                break;
+            }
         }
         if (!containsLetters) {
             punctuationF = null;
@@ -30,13 +43,28 @@ public class Word {
 
         //if the first character isn't alphabetic call it front punctuation
         if (!Character.isLetter(charArray[0])) {
-            punctuationF = charArray[0] + "";
+            punctuationF = "";
+            //loop through all of end until we hit a letter to accommodate "---" etc.
+            for (int i = 0; i < charArray.length; i++) {
+                if (Character.isLetter(charArray[i])) {
+                    break;
+                }
+                punctuationF = punctuationF + charArray[i];
+            }
         } else {
             punctuationF = null;
         }
         //if the first character isn't alphabetic call it end punctuation
         if (!Character.isLetter(charArray[charArray.length - 1])) {
-            punctuationE = charArray[charArray.length - 1] + "";
+            punctuationE = "";
+            //loop through all of end until we hit a letter to accommodate "..." etc.
+            for (int i = charArray.length - 1; i > 0; i--) {
+                if (Character.isLetter(charArray[i])) {
+                    break;
+                }
+                punctuationE = charArray[i] + punctuationE;
+            }
+
         } else {
             punctuationE = null;
         }
@@ -44,8 +72,12 @@ public class Word {
         //build an edited version of the word without punctuation and lowercased
         for (int i = 0; i < charArray.length; i++) {
             //dont include punctuation or anything other than a letter that's at the front or back of a word
-            if (punctuationF == null && i == 0) { continue;}
-            if (punctuationE == null && i == charArray.length-1) { continue;}
+            if (punctuationF != null && i < punctuationF.length()) {
+                continue;
+            }
+            if (punctuationE != null && i > charArray.length - 1 - punctuationE.length()) {
+                continue;
+            }
             editedWord = editedWord + charArray[i];
 
         }
@@ -61,9 +93,18 @@ public class Word {
 
 
     public String toPigLatin() {
-        if(!containsLetters) { return new String(originalWord);}
+        if (!containsLetters) {
+            return new String(originalWord);
+        }
         char[] charArray = editedWord.toCharArray();
-        
+        if (vowels.contains(charArray[0])) {
+            String pigLatinWord = new String(charArray);
+            if(isCapitalized) {
+                pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
+            }
+            //almsot done with rule 3, 1 and 2 need to be done
+            pigLatinWord = punctuationF + pigLatinWord + "way" + punctuationE;
+        }
     }
 
 
