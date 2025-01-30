@@ -14,7 +14,6 @@ public class Word {
     private boolean isCapitalized;
     private boolean containsLetters;
     private ArrayList<Character> vowels = new ArrayList<Character>();
-
     public Word(String newWord) {
         vowels.add('a');
         vowels.add('e');
@@ -92,32 +91,57 @@ public class Word {
         editedWord = editedWord.toLowerCase();
     }
 
-
+    //can't handle " --- " (entirely symbol 'words')
     public String toPigLatin() {
-        //!!!!!currently can't handlee 1 letter words!!!!!! 1/28/25
-
+        //!!!!!currently can't handle 1 letter words!!!!!! 1/28/25 DEALT WITH
+        //working on 1/30/25
+        //okay so like if it doesn't contain numbers (i.e. 40%) then just return the orginial
         if (!containsLetters) {
             return new String(originalWord);
         }
-
+        //make that baby a character array
         char[] charArray = editedWord.toCharArray();
-
+        //deal with the weird case that the length is 0, could maybe happen if something was like " --- "
+        if (charArray.length == 0) return originalWord;
+        //deal with single letter words, only possible cases are vowel or failure so only have to deal with those
+        if(charArray.length == 1) {
+            if(vowels.contains(charArray[0])) {
+                String piglatinword = new String(charArray);
+                if(isCapitalized) piglatinword = piglatinword.toUpperCase();
+                piglatinword = punctuationF + piglatinword + "way" + punctuationE;
+                return piglatinword;
+            } else {
+                String piglatinword = new String(charArray);
+                if(isCapitalized) piglatinword = piglatinword.toUpperCase();
+                piglatinword = punctuationF + piglatinword + punctuationE;
+                return piglatinword;
+            }
+        }
+        //is the first LETTER a vowel? check by referencing against list of vowels
         if (vowels.contains(charArray[0])) {
             System.out.println(3);
             //rule3
+            //create new string out of our character array
             String pigLatinWord = new String(charArray);
             if (isCapitalized) {
+                //if it's capitalized then capitalize the first letter
                 pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
             }
+            //add punctuation and pig latin modification
             pigLatinWord = punctuationF + pigLatinWord + "way" + punctuationE;
             return pigLatinWord;
         } else if (vowels.contains(charArray[1]) && Character.isLetter(charArray[0])) {
             System.out.println(1);
             //rule 1
+            //create new string
             String pigLatinWord = "";
             //assemble word starting at second letter
             for (int i = 1; i < charArray.length; i++) {
                 pigLatinWord = pigLatinWord + charArray[i];
+            }
+            if (isCapitalized) {
+                //if it's capitalized then capitalize the first letter
+                pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
             }
             //assemble word with ending and punctuation.
             pigLatinWord = punctuationF + pigLatinWord + charArray[0] + "ay" + punctuationE;
@@ -126,15 +150,22 @@ public class Word {
         } else if (Character.isLetter(charArray[0]) && Character.isLetter(charArray[1])) {
             //rule 2
             System.out.println(2);
+            //new string
             String pigLatinWord = "";
+            //build word starting at 3rd letter
             for (int i = 2; i < charArray.length; i++) {
                 pigLatinWord = pigLatinWord + charArray[i];
             }
+            if (isCapitalized) {
+                //if it's capitalized then capitalize the first letter
+                pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
+            }
+            //blah blah pig latin rules blah blah just put the crap back together the right way
             pigLatinWord = punctuationF + pigLatinWord + charArray[0] + charArray[1] + punctuationE;
             return pigLatinWord;
         } else {
             //failure handling
-            //currently may fail if a word is like x-xxxxx
+            //currently may fail if a word is like x
             System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
             return originalWord;
         }
