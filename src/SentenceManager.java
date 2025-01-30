@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 //basic *ss class to keep everything dealing with parsing out and rebuilding sentences in one place
 public class SentenceManager {
     public static ArrayList<Word> toWordList(String paragraph) {
