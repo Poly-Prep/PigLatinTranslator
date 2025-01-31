@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+//TO-DO: COMPLETE TOENGLISH FUNCTION
 //reminder to self, don't feed in spaces
 //for revision at end: possible bloat in unused instance variables
 public class Word {
@@ -94,17 +94,15 @@ public class Word {
         editedWord = editedWord.toLowerCase();
     }
 
-    //can't handle " --- " (entirely symbol 'words')
+    //CAN handle " --- " (entirely symbol 'words')
     public String toPigLatin() {
-        //!!!!!currently can't handle 1 letter words!!!!!! 1/28/25 DEALT WITH
-        //working on 1/30/25
         //okay so like if it doesn't contain numbers (i.e. 40%) then just return the orginial
         if (!containsLetters) {
             return new String(originalWord);
         }
         //make that baby a character array
         char[] charArray = editedWord.toCharArray();
-        //deal with the weird case that the length is 0, could maybe happen if something was like " --- "
+        //deal with the weird case that the length is 0, which no idea how that would ever happen but screw it!
         if (charArray.length == 0) return originalWord;
         //deal with single letter words, only possible cases are vowel or failure so only have to deal with those
         if(charArray.length == 1) {
@@ -170,7 +168,18 @@ public class Word {
             return originalWord;
         }
     }
+    //In progress
+    public String toEnglish() {
+        //okay so like if it doesn't contain numbers (i.e. 40%) then just return the orginial
+        if (!containsLetters) {
+            return new String(originalWord);
+        }
+        //make that baby a character array
+        char[] charArray = editedWord.toCharArray();
+        //deal with the weird case that the length is 0, which no idea how that would ever happen but screw it!
+        if (charArray.length == 0) return originalWord;
 
+    }
 
     public String getPunctuationF() {
         return punctuationF;
