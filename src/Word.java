@@ -15,6 +15,7 @@ public class Word {
     private boolean containsLetters;
     private ArrayList<Character> vowels = new ArrayList<Character>();
     public Word(String newWord) {
+        System.out.println(newWord);
         vowels.add('a');
         vowels.add('e');
         vowels.add('i');
@@ -39,7 +40,9 @@ public class Word {
             punctuationE = "";
             isCapitalized = false;
             editedWord = newWord;
+            return;
         }
+
 
         //if the first character isn't alphabetic call it front punctuation
         if (!Character.isLetter(charArray[0])) {
@@ -119,7 +122,6 @@ public class Word {
         }
         //is the first LETTER a vowel? check by referencing against list of vowels
         if (vowels.contains(charArray[0])) {
-            System.out.println(3);
             //rule3
             //create new string out of our character array
             String pigLatinWord = new String(charArray);
@@ -131,7 +133,6 @@ public class Word {
             pigLatinWord = punctuationF + pigLatinWord + "way" + punctuationE;
             return pigLatinWord;
         } else if (vowels.contains(charArray[1]) && Character.isLetter(charArray[0])) {
-            System.out.println(1);
             //rule 1
             //create new string
             String pigLatinWord = "";
@@ -149,7 +150,6 @@ public class Word {
             //redundant but worth checking for debugging and error handling reasons
         } else if (Character.isLetter(charArray[0]) && Character.isLetter(charArray[1])) {
             //rule 2
-            System.out.println(2);
             //new string
             String pigLatinWord = "";
             //build word starting at 3rd letter
