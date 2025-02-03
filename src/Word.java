@@ -169,16 +169,24 @@ public class Word {
         }
     }
     //In progress
-    public String toEnglish() {
+    public String[] toEnglish() {
         //okay so like if it doesn't contain numbers (i.e. 40%) then just return the orginial
         if (!containsLetters) {
-            return new String(originalWord);
+            return new String[]{originalWord};
         }
         //make that baby a character array
         char[] charArray = editedWord.toCharArray();
         //deal with the weird case that the length is 0, which no idea how that would ever happen but screw it!
-        if (charArray.length == 0) return originalWord;
+        if (charArray.length == 0) return new String[]{originalWord};
+        //checking if word ends in "way" and if that "way" is at the end of the word
 
+        if (editedWord.contains("way")&& editedWord.lastIndexOf("way") == editedWord.length() - 1 - 2) {
+            String possibleWord1 = new String (editedWord.substring(0,editedWord.lastIndexOf("way")));
+
+        }
+
+        //TEMPORARY
+        return null;
     }
 
     public String getPunctuationF() {
