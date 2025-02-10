@@ -14,7 +14,9 @@ public class Word {
     private boolean isCapitalized;
     private boolean containsLetters;
     private ArrayList<Character> vowels = new ArrayList<Character>();
-    public Word(String newWord) {
+    Dictionary dictionary;
+    public Word(String newWord, Dictionary dictionary) {
+        this.dictionary = dictionary;
         System.out.println(newWord);
         vowels.add('a');
         vowels.add('e');
@@ -161,32 +163,72 @@ public class Word {
             //blah blah pig latin rules blah blah just put the crap back together the right way
             pigLatinWord = punctuationF + pigLatinWord + charArray[0] + charArray[1] + punctuationE;
             return pigLatinWord;
+        } else if (!vowels.contains(charArray[0]) && Character.isLetter(charArray[0]) && charArray.length == 1) {
+            //'Y' and each individual letter is technically a word, and isn't handled by the piglatin rules, so this is the exception for it
+            return originalWord;
         } else {
             //failure handling
-            //currently may fail if a word is like x
             System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
             return originalWord;
         }
     }
-    //In progress
+    //In Testing 2/10/25
     public String[] toEnglish() {
-        //okay so like if it doesn't contain numbers (i.e. 40%) then just return the orginial
+        //okay so like if it doesn't contain letters (i.e. 40%) then just return the orginial
         if (!containsLetters) {
             return new String[]{originalWord};
         }
         //make that baby a character array
         char[] charArray = editedWord.toCharArray();
-        //deal with the weird case that the length is 0, which no idea how that would ever happen but screw it!
-        if (charArray.length == 0) return new String[]{originalWord};
-        //checking if word ends in "way" and if that "way" is at the end of the word
-
-        if (editedWord.contains("way")&& editedWord.lastIndexOf("way") == editedWord.length() - 1 - 2) {
-            String possibleWord1 = new String (editedWord.substring(0,editedWord.lastIndexOf("way")));
-
+        //deal with the weird case that the length is 0, which no idea how that would ever happen but screw it! Also deals with the weird fact that 'X' and all the letters are technically words and might show up
+        if (charArray.length == 0 || charArray.length == 1) return new String[]{originalWord};
+        //create an arraylist to hold any possible words
+        ArrayList<String> possibleWords = new ArrayList<String>();
+        //checking if word ends in "way" and if that "way" is at the end of the word. Shortest possible occurance of this would be if we started with the word "a", which wouldn't conflict with the methodology ghere
+        if (editedWord.contains("way") && vowels.contains(charArray[0]) && editedWord.lastIndexOf("way") == editedWord.length() - 1 - 2) {
+            possibleWords.add(editedWord.substring(0,editedWord.lastIndexOf("way")));
         }
+        //okay so my thought is, both of the other rules add ay to the end, so we're safe to just remove "ay" if we see it, throw an error if we dont
+        if (editedWord.contains("ay") && editedWord.lastIndexOf("ay") == editedWord.length() - 1 - 1) {
+            String choppedWord = editedWord.substring(0, editedWord.lastIndexOf("ay"));
+            //rule 1. if it starts with a vowel, do this crap
+            if (vowels.contains(charArray[0])) {
+                //using a string builder for fun, move letter at the end to the front then add to list of possible words
+                StringBuilder possible1 = new StringBuilder();
+                possible1.append(choppedWord.charAt(choppedWord.length() - 1));
+                possible1.append(choppedWord.substring(0, choppedWord.length() - 1));
+                possibleWords.add(possible1.toString());
+            }
+            //rule 2
+            StringBuilder possible2 = new StringBuilder();
+            //this rule can get messed up if we got a word like "Ty" so we gotta have an exception
+            if(choppedWord.length() == 2) possibleWords.add(choppedWord);
+            else{
+                //chop off back 2 and add to front then add to list of possible words
+                possible2.append(choppedWord.substring(choppedWord.length() - 2));
+                possible2.append(choppedWord.substring(0, choppedWord.length() - 2));
+                possibleWords.add(possible2.toString());
+            }
+        } else {
+            System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
+            System.out.println("Possible words: " + possibleWords);
+            System.out.println("ERROR IN RULES 1 AND 2, FAILURE TO FIND 'AY'");
+        }
+        //create list for holding valid words, run through words and if they valid put em in the list and add their punctuations. if no words are valid.... somethings wrong, return the original word
+        ArrayList<String> validWords = new ArrayList<>();
+        for (String word : possibleWords) {
+            if (dictionary.findWord(word)) {
+                validWords.add(punctuationF + word + punctuationE);
+            }
+        }
+        if (validWords.size() == 0) {
+            System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
+            System.out.println("Possible words: " + possibleWords);
+            System.out.println("No Valid Words Found");
+            return new String[]{originalWord};
+        }
+        return (String[]) validWords.toArray();
 
-        //TEMPORARY
-        return null;
     }
 
     public String getPunctuationF() {

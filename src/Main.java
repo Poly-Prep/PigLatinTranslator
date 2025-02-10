@@ -1,5 +1,7 @@
 import java.io.File;
-
+//TO-DO:
+// DELETE DIC IN FILEMANAGER
+//test to piglatin function
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 //TO-DO: GUI

@@ -1,68 +1,63 @@
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
-//https://www.geeksforgeeks.org/different-ways-reading-text-file-java/
-//Just another basic POS to read in the desired file and consolidate crud
-public class FileManager {
-//TO DO: reading in files; writing files; error handling
-    public static String readFile(String fileName) {
-        //https://www.w3schools.com/java/java_files_read.asp
-        //https://www.geeksforgeeks.org/stringbuilder-class-in-java-with-examples/
+public class Dictionary {
+    private HashMap<String, ArrayList<String>> dictionary;
+    public Dictionary() {
+        //vital to functioning of program, must exit if failed
         try {
-            StringBuilder fileContent = new StringBuilder();
-            File file;
-            if (fileName.contains(".txt")) {
-                file = new File(fileName);
-            }else {
-                file = new File(fileName+".txt");
+            //copious checking to make sure we know exactly what's happening if there's an error and to create a dictionary if none found
+            File file = new File("&*&dictionary&*&.txt");
+            if (!file.exists()) {
+                createDictionary();
+            }
+            String rawDictionary = FileManager.readFile("&*&dictionary&*&.txt");
+            if(rawDictionary == null || rawDictionary.isEmpty() || !rawDictionary.contains("a{") || !rawDictionary.contains("b{") || !rawDictionary.contains("c{")) {
+                System.out.println("Dictionary read failure: !#@!#@");
+                System.exit(0);
+            }
+            //Create dictionary object, can't use primitive in it so using strings instead of chars for hte key
+            dictionary = new HashMap<String, ArrayList<String>>();
+            //screw aliasing
+            String editedDictionary = new String(rawDictionary);
+            //going through each letter in the dictionary and parsing out the list of words as I've stored them
+            for(char letter = 'a' ; letter <= 'z' ; letter++){
+                //UP stands for unparsed, so unparsed words. Taking out the relevant section of words
+                String UPWords = editedDictionary.substring(editedDictionary.indexOf('{')+1,editedDictionary.indexOf('}'));
+                ArrayList<String> words = new ArrayList<String>();
+                //go through until no words left
+                while(!UPWords.isEmpty()){
+                    if (UPWords.contains(",")) {
+                        words.add(UPWords.substring(0, UPWords.indexOf(',')));
+                        UPWords = UPWords.substring(UPWords.indexOf(',') + 1);
+                    } else {
+                        words.add(UPWords);
+                        UPWords = "";
+                    }
+                }
+                //adding the parsed word list
+                dictionary.put(""+letter, words);
+                //removed parsed portion
+                if (letter != 'z') editedDictionary = editedDictionary.substring(editedDictionary.indexOf('}')+1);
             }
 
-            Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                fileContent.append(data).append("\n");
-            }
-            myReader.close();
-            return fileContent.toString();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Error in reading file");
+        }catch (Exception e) {
             e.printStackTrace();
-            return "";
+            System.out.println("Dictionary object creation failure:&*($!@&");
+            System.exit(0);
         }
     }
-    public static boolean writeFile(String fileName, String content) {
-        //https://www.baeldung.com/java-write-to-file
-        //checking if somebody is fcking with us and is trying to overwrite the dictionary
-        if (fileName.equals("words_alpha") || fileName.equals("&*&dictionary&*&") && !content.contains("a{") && !content.contains("b{") && !content.contains("c{")) {
-            return false;
-        }
-        try{
-            BufferedWriter myWriter;
-            if (fileName.contains(".txt")){
-                myWriter = new BufferedWriter(new FileWriter(fileName));
-            }else {
-                myWriter = new BufferedWriter(new FileWriter(fileName+".txt"));
-            }
-            myWriter.write(content);
-            myWriter.close();
+    public boolean findWord(String word) {
+        String letter = word.charAt(0) + "";
+        ArrayList<String> words = dictionary.get(letter);
+        if(words.contains(word)) {
             return true;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Error in writing file");
-            e.printStackTrace();
-            return false;
-        }
+        } else { return false; }
     }
-    //TO BE DELETED
-
     //one time use function to create a more efficient dictionary search function
-    /*public static void createDictionary(){
+    public static void createDictionary(){
         //TO-DO: Finish this thing up, last thing was working on was the thing to create the hashmap that houses the new dictionary, after that'll be formatting the writing of it
         StringBuilder fileContent = new StringBuilder();
         try {
@@ -98,7 +93,7 @@ public class FileManager {
             dictionary.put(key,new ArrayList<String>());
         }
         //sort out all of the words by their first letter
-        while(!fileContentCopy.equals("")){
+        while(!fileContentCopy.isEmpty()){
             String word = fileContentCopy.substring(0, fileContentCopy.indexOf(";"));
             dictionary.get("" + word.charAt(0)).add(word);
             if(fileContentCopy.contains(";")&&fileContentCopy.indexOf(";") + 1 != fileContentCopy.length()) {
@@ -117,8 +112,6 @@ public class FileManager {
             finalFileContent.deleteCharAt(finalFileContent.length()-1);
             finalFileContent.append("}");
         }
-        writeFile("&*&dictionary&*&", finalFileContent.toString());
-    }*/
-
-
+        FileManager.writeFile("&*&dictionary&*&", finalFileContent.toString());
+    }
 }
