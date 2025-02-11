@@ -221,11 +221,16 @@ public class Word {
                 validWords.add(punctuationF + word + punctuationE);
             }
         }
+        //if no word is valid, welp, something is wrong! Give the user all of em, plus the original. It's up to them.
         if (validWords.size() == 0) {
-            System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
+            for (String word : possibleWords) {
+                validWords.add(punctuationF + word + punctuationE);
+            }
+            validWords.add(originalWord);
+
+            /*System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
             System.out.println("Possible words: " + possibleWords);
-            System.out.println("No Valid Words Found");
-            return new String[]{originalWord};
+            System.out.println("No Valid Words Found");*/
         }
         return (String[]) validWords.toArray();
 
