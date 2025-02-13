@@ -5,12 +5,29 @@ import java.util.Scanner;
 
 public class Dictionary {
     private HashMap<String, ArrayList<String>> dictionary;
+    private ArrayList<String> commonWordList;
     public Dictionary() {
         //vital to functioning of program, must exit if failed
         try {
+            File commonWords = new File("1000-most-common-words.txt");
+            if (!commonWords.exists()) {
+                System.out.println("No  common words file found");
+                System.exit(0);
+            }
+            String commonWordsContent = FileManager.readFile("1000-most-common-words.txt");
+
+            commonWordList = SentenceManager.toWordListNL(commonWordsContent);
+            File McommonWords = new File("5000-more-common.txt");
+            if (!McommonWords.exists()) {
+                System.out.println("No more common words file found");
+                System.exit(0);
+            }
+            String McommonWordsContent = FileManager.readFile("5000-more-common.txt");
+
+            commonWordList.addAll(SentenceManager.toWordListNL(McommonWordsContent));
             //copious checking to make sure we know exactly what's happening if there's an error and to create a dictionary if none found
-            File file = new File("&*&dictionary&*&.txt");
-            if (!file.exists()) {
+            File dicFile = new File("&*&dictionary&*&.txt");
+            if (!dicFile.exists()) {
                 createDictionary();
             }
             String rawDictionary = FileManager.readFile("&*&dictionary&*&.txt");
@@ -48,6 +65,9 @@ public class Dictionary {
             System.out.println("Dictionary object creation failure:&*($!@&");
             System.exit(0);
         }
+    }
+    public boolean isCommon(String word){
+        return commonWordList.contains(word);
     }
     public boolean findWord(String word) {
         String letter = word.charAt(0) + "";

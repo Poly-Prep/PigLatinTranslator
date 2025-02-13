@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+//TODO APOSTROPHES
 //TO-DO: COMPLETE TOENGLISH FUNCTION
 //reminder to self, don't feed in spaces
 //for revision at end: possible bloat in unused instance variables
@@ -17,7 +18,7 @@ public class Word {
     Dictionary dictionary;
     public Word(String newWord, Dictionary dictionary) {
         this.dictionary = dictionary;
-        System.out.println(newWord);
+
         vowels.add('a');
         vowels.add('e');
         vowels.add('i');
@@ -62,6 +63,7 @@ public class Word {
         //if the first character isn't alphabetic call it end punctuation
         if (!Character.isLetter(charArray[charArray.length - 1])) {
             punctuationE = "";
+            //TODO APOSTROPHES
             //loop through all of end until we hit a letter to accommodate "..." etc.
             for (int i = charArray.length - 1; i > 0; i--) {
                 if (Character.isLetter(charArray[i])) {
@@ -85,6 +87,13 @@ public class Word {
             }
             editedWord = editedWord + charArray[i];
 
+        }
+        //TODO DOES THIS CRAP WORK
+        if (editedWord.contains("'")) {
+            String temp = editedWord.substring(editedWord.indexOf("'"));
+            temp = temp + punctuationE;
+            punctuationE = temp;
+            editedWord = editedWord.substring(0, editedWord.lastIndexOf("'"));
         }
         //fill out is capitalized field before turning all to lowercase
         if (Character.isUpperCase(editedWord.charAt(0))) {
@@ -161,7 +170,7 @@ public class Word {
                 pigLatinWord = pigLatinWord.substring(0, 1).toUpperCase() + pigLatinWord.substring(1);
             }
             //blah blah pig latin rules blah blah just put the crap back together the right way
-            pigLatinWord = punctuationF + pigLatinWord + charArray[0] + charArray[1] + punctuationE;
+            pigLatinWord = punctuationF + pigLatinWord + charArray[0] + charArray[1] + "ay" + punctuationE;
             return pigLatinWord;
         } else if (!vowels.contains(charArray[0]) && Character.isLetter(charArray[0]) && charArray.length == 1) {
             //'Y' and each individual letter is technically a word, and isn't handled by the piglatin rules, so this is the exception for it
@@ -224,15 +233,14 @@ public class Word {
         //if no word is valid, welp, something is wrong! Give the user all of em, plus the original. It's up to them.
         if (validWords.size() == 0) {
             for (String word : possibleWords) {
-                validWords.add(punctuationF + word + punctuationE);
+                if(!word.isEmpty() && !word.isBlank()) validWords.add(punctuationF + word + punctuationE);
+
             }
             validWords.add(originalWord);
 
-            /*System.out.println("Failure to translate: " + editedWord + " | " + originalWord);
-            System.out.println("Possible words: " + possibleWords);
-            System.out.println("No Valid Words Found");*/
+
         }
-        return (String[]) validWords.toArray();
+        return validWords.toArray(new String[0]);
 
     }
 

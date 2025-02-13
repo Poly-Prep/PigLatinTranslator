@@ -59,66 +59,7 @@ public class FileManager {
             return false;
         }
     }
-    //TO BE DELETED
 
-    //one time use function to create a more efficient dictionary search function
-    /*public static void createDictionary(){
-        //TO-DO: Finish this thing up, last thing was working on was the thing to create the hashmap that houses the new dictionary, after that'll be formatting the writing of it
-        StringBuilder fileContent = new StringBuilder();
-        try {
-
-            File file = new File("words_alpha.txt");
-            if (file.exists()) {
-                System.out.println("File name: " + file.getName());
-                System.out.println("Absolute path: " + file.getAbsolutePath());
-                System.out.println("Writeable: " + file.canWrite());
-                System.out.println("Readable " + file.canRead());
-                System.out.println("File size in bytes " + file.length());
-            } else {
-                System.out.println("The file does not exist.");
-            }
-            Scanner myReader = new Scanner(file);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                fileContent.append(data).append(";");
-            }
-            myReader.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Error in reading initial dictionary file");
-            e.printStackTrace();
-            return;
-        }
-        String fileContentCopy = fileContent.toString();
-        //https://stackoverflow.com/questions/33163253/for-loop-iteration-through-alphabet-java
-        //create an array of strings for each letter of the alphabet and put em in a hashmap
-        HashMap<String, ArrayList<String>> dictionary = new HashMap<String, ArrayList<String>>();
-        for(char letter = 'a' ; letter <= 'z' ; letter++){
-            String key = "" + letter;
-            dictionary.put(key,new ArrayList<String>());
-        }
-        //sort out all of the words by their first letter
-        while(!fileContentCopy.equals("")){
-            String word = fileContentCopy.substring(0, fileContentCopy.indexOf(";"));
-            dictionary.get("" + word.charAt(0)).add(word);
-            if(fileContentCopy.contains(";")&&fileContentCopy.indexOf(";") + 1 != fileContentCopy.length()) {
-                fileContentCopy = fileContentCopy.substring(fileContentCopy.indexOf(";") + 1);
-            } else {
-                break;
-            }
-        }
-        StringBuilder finalFileContent = new StringBuilder();
-        for(String letter : dictionary.keySet()){
-            finalFileContent.append(letter).append("{");
-            ArrayList<String> words = dictionary.get(letter);
-            for(String word : words){
-                finalFileContent.append(word).append(",");
-            }
-            finalFileContent.deleteCharAt(finalFileContent.length()-1);
-            finalFileContent.append("}");
-        }
-        writeFile("&*&dictionary&*&", finalFileContent.toString());
-    }*/
 
 
 }
