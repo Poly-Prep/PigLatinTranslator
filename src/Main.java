@@ -86,7 +86,7 @@ public class Main {
                     if (input2.equals("yes") || input2.equals("y") || input2.equals("true") || input2.equals("t")) {
                         String filename = getValidFilename(scanner);
                         System.out.println("Valid filename entered: " + filename);
-                        FileManager.writeFile(filename+".txt", pigText);
+                        FileManager.writeFile(filename + ".txt", pigText);
                         break;
                     } else if (input2.equals("no") || input2.equals("n") || input2.equals("false") || input2.equals("f")) {
                         System.out.println("Goodbye!");
@@ -101,7 +101,7 @@ public class Main {
                 break;
             case 2:
                 String pigText2 = new String(input);
-                String englishText2 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary),dictionary);
+                String englishText2 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
                 System.out.println("Your english text was: " + englishText2);
                 System.out.println("Your text translated to pig-latin was: " + pigText2);
                 Scanner scanner3 = new Scanner(System.in);
@@ -114,7 +114,7 @@ public class Main {
                     if (input3.equals("yes") || input3.equals("y") || input3.equals("true") || input3.equals("t")) {
                         String filename = getValidFilename(scanner);
                         System.out.println("Valid filename entered: " + filename);
-                        FileManager.writeFile(filename+".txt", englishText2);
+                        FileManager.writeFile(filename + ".txt", englishText2);
                         break;
                     } else if (input3.equals("no") || input3.equals("n") || input3.equals("false") || input3.equals("f")) {
                         System.out.println("Goodbye!");
@@ -127,10 +127,9 @@ public class Main {
                 scanner.close(); // Close the scanner to prevent resource leaks
                 break;
             case 3:
-                Scanner scanner4 = new Scanner(System.in);
                 String input4;
                 String pigText3 = new String(input);
-                String englishText3 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary),dictionary);
+                String englishText3 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
                 System.out.println("Your english text was: " + englishText3);
                 System.out.println("Your text translated to pig-latin was: " + pigText3);
 
@@ -142,7 +141,7 @@ public class Main {
                     if (input3.equals("yes") || input3.equals("y") || input3.equals("true") || input3.equals("t")) {
                         String filename = getValidFilename(scanner);
                         System.out.println("Valid filename entered: " + filename);
-                        FileManager.writeFile(filename+".txt", englishText2);
+                        FileManager.writeFile(filename + ".txt", englishText2);
                         break;
                     } else if (input3.equals("no") || input3.equals("n") || input3.equals("false") || input3.equals("f")) {
                         System.out.println("Goodbye!");
@@ -152,7 +151,6 @@ public class Main {
                     }
                 }
 
-                scanner.close(); // Close the scanner to prevent resource leaks
                 break;
             case 4:
                 System.out.println("You chose method: " + choice);
@@ -160,8 +158,10 @@ public class Main {
 
         }
 
+        scanner.close(); // Close the scanner to prevent resource leaks
 
     }
+
     // Function to validate and get a valid filename
     private static String getValidFilename(Scanner scanner) {
         String filename;
