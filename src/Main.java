@@ -68,7 +68,7 @@ public class Main {
         System.out.println("\nYou chose method: " + choice);
         System.out.println("Your input was: " + input);
 
-        scanner.close();
+        
         switch (choice) {
             case 1:
                 String englishText = new String(input);
