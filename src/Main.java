@@ -76,7 +76,6 @@ public class Main {
                 System.out.println("Your english text was: " + englishText);
                 System.out.println("Your text translated to pig-latin was: " + pigText);
 
-                Scanner scanner2 = new Scanner(System.in);
                 String input2;
 
                 while (true) { // Keep asking until valid input is received
@@ -96,7 +95,6 @@ public class Main {
                     }
                 }
 
-                scanner.close(); // Close the scanner to prevent resource leaks
 
                 break;
             case 2:
@@ -104,7 +102,6 @@ public class Main {
                 String englishText2 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
                 System.out.println("Your english text was: " + englishText2);
                 System.out.println("Your text translated to pig-latin was: " + pigText2);
-                Scanner scanner3 = new Scanner(System.in);
                 String input3;
 
                 while (true) { // Keep asking until valid input is received
@@ -124,26 +121,32 @@ public class Main {
                     }
                 }
 
-                scanner.close(); // Close the scanner to prevent resource leaks
                 break;
             case 3:
-                String input4;
-                String pigText3 = new String(input);
-                String englishText3 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
-                System.out.println("Your english text was: " + englishText3);
-                System.out.println("Your text translated to pig-latin was: " + pigText3);
+                File fileBoogy = new File("");
+                String filename = getValidFilename(scanner);
+                fileBoogy = new File(filename + ".txt");
+                while(!fileBoogy.exists()) {
+                    filename = getValidFilename(scanner);
+                    fileBoogy = new File(filename + ".txt");
+                }
+                input = FileManager.readFile(filename+".txt");
+                englishText = new String(input);
+                pigText = SentenceManager.toPigParagraph(SentenceManager.toWordList(input, dictionary));
+                System.out.println("Your english text was: " + englishText);
+                System.out.println("Your text translated to pig-latin was: " + pigText);
 
 
                 while (true) { // Keep asking until valid input is received
                     System.out.println("Would you like to save your result? (Y/N)");
-                    input3 = scanner.nextLine().trim().toLowerCase();
+                    input = scanner.nextLine().trim().toLowerCase();
 
-                    if (input3.equals("yes") || input3.equals("y") || input3.equals("true") || input3.equals("t")) {
-                        String filename = getValidFilename(scanner);
+                    if (input.equals("yes") || input.equals("y") || input.equals("true") || input.equals("t")) {
+                        filename = getValidFilename(scanner);
                         System.out.println("Valid filename entered: " + filename);
-                        FileManager.writeFile(filename + ".txt", englishText2);
+                        FileManager.writeFile(filename + ".txt", pigText);
                         break;
-                    } else if (input3.equals("no") || input3.equals("n") || input3.equals("false") || input3.equals("f")) {
+                    } else if (input.equals("no") || input.equals("n") || input.equals("false") || input.equals("f")) {
                         System.out.println("Goodbye!");
                         break; // Exit the loop on valid input
                     } else {
@@ -153,7 +156,36 @@ public class Main {
 
                 break;
             case 4:
-                System.out.println("You chose method: " + choice);
+                fileBoogy = new File("");
+                filename = getValidFilename(scanner);
+                fileBoogy = new File(filename + ".txt");
+                while(!fileBoogy.exists()) {
+                    filename = getValidFilename(scanner);
+                    fileBoogy = new File(filename + ".txt");
+                }
+                input = FileManager.readFile(filename+".txt");
+                pigText = new String(input);
+                englishText = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
+                System.out.println("Your english text was: " + englishText);
+                System.out.println("Your text translated to pig-latin was: " + pigText);
+
+
+                while (true) { // Keep asking until valid input is received
+                    System.out.println("Would you like to save your result? (Y/N)");
+                    input = scanner.nextLine().trim().toLowerCase();
+
+                    if (input.equals("yes") || input.equals("y") || input.equals("true") || input.equals("t")) {
+                        filename = getValidFilename(scanner);
+                        System.out.println("Valid filename entered: " + filename);
+                        FileManager.writeFile(filename + ".txt", englishText);
+                        break;
+                    } else if (input.equals("no") || input.equals("n") || input.equals("false") || input.equals("f")) {
+                        System.out.println("Goodbye!");
+                        break; // Exit the loop on valid input
+                    } else {
+                        System.out.println("Invalid input. Please enter yes/no or true/false.");
+                    }
+                }
                 break;
 
         }
