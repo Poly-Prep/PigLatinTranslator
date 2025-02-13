@@ -35,38 +35,11 @@ public class Main {
             System.out.print("Invalid choice. Please enter 1, 2, 3, or 4: ");
         }
 
-        // Get input based on the choice
-        switch (choice) {
-            case 1:
-                System.out.print("Enter text to be translated to pig-latin: ");
-                input = scanner.nextLine();
-                break;
-            case 2:
-                System.out.print("Enter text to be translated to english: ");
-                input = scanner.nextLine();
-                break;
-            case 3:
-                File file = new File("");
-                while (!file.exists()) {
-                    file = new File(input);
-                    System.out.print("Enter a valid file name: ");
-                    input = scanner.nextLine();
-                }
-                break;
-            case 4:
-                File file2 = new File("");
-                while (!file2.exists()) {
-                    file2 = new File(input);
-                    System.out.print("Enter a valid file name: ");
-                    input = scanner.nextLine();
-                }
-                break;
-        }
 
 
         // Output results
         System.out.println("\nYou chose method: " + choice);
-        
+
 
 
         switch (choice) {
@@ -156,7 +129,6 @@ public class Main {
 
                 break;
             case 4:
-                fileBoogy = new File("");
                 filename = getValidFilename(scanner);
                 fileBoogy = new File(filename + ".txt");
                 while(!fileBoogy.exists()) {
@@ -166,8 +138,8 @@ public class Main {
                 input = FileManager.readFile(filename+".txt");
                 pigText = new String(input);
                 englishText = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
-                System.out.println("Your english text was: " + englishText);
-                System.out.println("Your text translated to pig-latin was: " + pigText);
+                System.out.println("Your pig-latin text was: " + pigText);
+                System.out.println("Your text translated to english was: " + englishText);
 
 
                 while (true) { // Keep asking until valid input is received
