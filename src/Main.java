@@ -66,9 +66,9 @@ public class Main {
 
         // Output results
         System.out.println("\nYou chose method: " + choice);
-        System.out.println("Your input was: " + input);
-
         
+
+
         switch (choice) {
             case 1:
                 String englishText = new String(input);
@@ -100,8 +100,8 @@ public class Main {
             case 2:
                 String pigText2 = new String(input);
                 String englishText2 = SentenceManager.toEnglishParagraph(SentenceManager.toWordList(input, dictionary), dictionary);
-                System.out.println("Your english text was: " + englishText2);
-                System.out.println("Your text translated to pig-latin was: " + pigText2);
+                System.out.println("Your pig-latin text was: " + pigText2);
+                System.out.println("Your text translated to english was: " + englishText2);
                 String input3;
 
                 while (true) { // Keep asking until valid input is received
